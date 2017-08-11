@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../.idea/hsjtest.iml" filepath="$PROJECT_DIR$/../.idea/hsjtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../hsjtest/.idea/hsjtest.iml" filepath="$PROJECT_DIR$/../hsjtest/.idea/hsjtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/machinelearning.iml" filepath="$PROJECT_DIR$/.idea/machinelearning.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../hsjtest/machinelearning/.idea/machinelearning.iml" filepath="$PROJECT_DIR$/../hsjtest/machinelearning/.idea/machinelearning.iml" />
+    </modules>
+  </component>
+</project>

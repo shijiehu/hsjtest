@@ -22,7 +22,7 @@ def standRegres(xArr,yArr):
     xMat = mat(xArr); yMat = mat(yArr).T
     xTx = xMat.T*xMat
     if linalg.det(xTx) == 0.0:
-        print "This matrix is singular, cannot do inverse"
+        print( "This matrix is singular, cannot do inverse")
         return
     ws = xTx.I * (xMat.T*yMat)
     return ws
@@ -36,7 +36,7 @@ def lwlr(testPoint,xArr,yArr,k=1.0):
         weights[j,j] = exp(diffMat*diffMat.T/(-2.0*k**2))
     xTx = xMat.T * (weights * xMat)
     if linalg.det(xTx) == 0.0:
-        print "This matrix is singular, cannot do inverse"
+        print( "This matrix is singular, cannot do inverse")
         return
     ws = xTx.I * (xMat.T * (weights * yMat))
     return testPoint * ws
@@ -59,11 +59,13 @@ def lwlrTestPlot(xArr,yArr,k=1.0):  #same thing as lwlrTest except it sorts X fi
 def rssError(yArr,yHatArr): #yArr and yHatArr both need to be arrays
     return ((yArr-yHatArr)**2).sum()
 
+#岭回归
+####
 def ridgeRegres(xMat,yMat,lam=0.2):
     xTx = xMat.T*xMat
     denom = xTx + eye(shape(xMat)[1])*lam
     if linalg.det(denom) == 0.0:
-        print "This matrix is singular, cannot do inverse"
+        print( "This matrix is singular, cannot do inverse")
         return
     ws = denom.I * (xMat.T*yMat)
     return ws
@@ -73,8 +75,8 @@ def ridgeTest(xArr,yArr):
     yMean = mean(yMat,0)
     yMat = yMat - yMean     #to eliminate X0 take mean off of Y
     #regularize X's
-    xMeans = mean(xMat,0)   #calc mean then subtract it off
-    xVar = var(xMat,0)      #calc variance of Xi then divide by it
+    xMeans = mean(xMat,0)   #calc mean then subtract it off 计算每一列均值
+    xVar = var(xMat,0)      #calc variance of Xi then divide by it  计算方差
     xMat = (xMat - xMeans)/xVar
     numTestPts = 30
     wMat = zeros((numTestPts,shape(xMat)[1]))
@@ -89,6 +91,8 @@ def regularize(xMat):#regularize by columns
     inVar = var(inMat,0)      #calc variance of Xi then divide by it
     inMat = (inMat - inMeans)/inVar
     return inMat
+
+#向前逐步线性回归
 
 def stageWise(xArr,yArr,eps=0.01,numIt=100):
     xMat = mat(xArr); yMat=mat(yArr).T
@@ -115,7 +119,8 @@ def stageWise(xArr,yArr,eps=0.01,numIt=100):
     return returnMat
 
 def scrapePage(inFile,outFile,yr,numPce,origPrc):
-    from BeautifulSoup import BeautifulSoup
+    #from BeautifulSoup import BeautifulSoup
+    from bs4 import BeautifulSoup
     fr = open(inFile); fw=open(outFile,'a') #a is append mode writing
     soup = BeautifulSoup(fr.read())
     i=1
@@ -130,7 +135,7 @@ def scrapePage(inFile,outFile,yr,numPce,origPrc):
             newFlag = 0.0
         soldUnicde = currentRow[0].findAll('td')[3].findAll('span')
         if len(soldUnicde)==0:
-            print "item #%d did not sell" % i
+            print( "item #%d did not sell" % i)
         else:
             soldPrice = currentRow[0].findAll('td')[4]
             priceStr = soldPrice.text
@@ -138,7 +143,7 @@ def scrapePage(inFile,outFile,yr,numPce,origPrc):
             priceStr = priceStr.replace(',','') #strips out ,
             if len(soldPrice)>1:
                 priceStr = priceStr.replace('Free shipping', '') #strips out Free Shipping
-            print "%s\t%d\t%s" % (priceStr,newFlag,title)
+            print( "%s\t%d\t%s" % (priceStr,newFlag,title))
             fw.write("%d\t%d\t%d\t%f\t%s\n" % (yr,numPce,newFlag,origPrc,priceStr))
         i += 1
         currentRow = soup.findAll('table', r="%d" % i)
@@ -185,5 +190,5 @@ def crossValidation(xArr,yArr,numVal=10):
     xMat = mat(xArr); yMat=mat(yArr).T
     meanX = mean(xMat,0); varX = var(xMat,0)
     unReg = bestWeights/varX
-    print "the best model from Ridge Regression is:\n",unReg
-    print "with constant term: ",-1*sum(multiply(meanX,unReg)) + mean(yMat)
+    print( "the best model from Ridge Regression is:\n",unReg)
+    print( "with constant term: ",-1*sum(multiply(meanX,unReg)) + mean(yMat))
